@@ -108,7 +108,7 @@ jobs:
       SMTP_PASSWORD:     ${{ secrets.SMTP_PASSWORD }}
       ALERT_EMAIL:       ${{ secrets.ALERT_EMAIL }}
 
-  # Final: Success notification
+  #Final: Success notification
   notify-success:
     name: "✅ Pipeline Complete — medimesh-user"
     runs-on: ubuntu-latest
