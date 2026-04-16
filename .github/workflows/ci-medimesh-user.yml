@@ -52,7 +52,7 @@ jobs:
   
   # Stage 1: SonarQube Code Quality Analysis
   sonarqube:
-    uses: Medimesh-grp3/ci-templates/.github/workflows/template-sonarqube.yml@main
+    uses: Medimesh-grp3/template-ci/.github/workflows/template-sonarqube.yml@main
     with:
       service_name: medimesh-user
       service_path: .
@@ -67,7 +67,7 @@ jobs:
   # Stage 2: Build Dependencies & Snyk Security Scan
   build-snyk:
     needs: sonarqube
-    uses: Medimesh-grp3/ci-templates/.github/workflows/template-build-snyk.yml@main
+    uses: Medimesh-grp3/template-ci/.github/workflows/template-build-snyk.yml@main
     with:
       service_name: medimesh-user
       service_path: .
@@ -81,7 +81,7 @@ jobs:
   # Stage 3: Docker Build + Trivy Scan + Push to DockerHub
   docker:
     needs: build-snyk
-    uses: Medimesh-grp3/ci-templates/.github/workflows/template-docker.yml@main
+    uses: Medimesh-grp3/template-ci/.github/workflows/template-docker.yml@main
     with:
       service_name:      medimesh-user
       service_path:      .
@@ -97,7 +97,7 @@ jobs:
   deploy:
     needs: docker
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    uses: Medimesh-grp3/ci-templates/.github/workflows/template-cd.yml@main
+    uses: Medimesh-grp3/template-ci/.github/workflows/template-cd.yml@main
     with:
       service_name: medimesh-user
       values_key:   user
@@ -108,7 +108,7 @@ jobs:
       SMTP_PASSWORD:     ${{ secrets.SMTP_PASSWORD }}
       ALERT_EMAIL:       ${{ secrets.ALERT_EMAIL }}
 
-  #Final: Success notification
+  # Final: Success notification
   notify-success:
     name: "✅ Pipeline Complete — medimesh-user"
     runs-on: ubuntu-latest
